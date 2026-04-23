@@ -14,24 +14,37 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.senac.gerenciamentoviagem.Bd.AppDatabase
 import com.senac.gerenciamentoviagem.ViewModel.LoginViewModel
+import com.senac.gerenciamentoviagem.ViewModel.LoginViewModelFactory
+import kotlinx.coroutines.launch
 
 @Composable
 fun TelaMain(
     onLogin: (String) -> Unit,
     onCadastro: () -> Unit,
     onRecuperarSenha: () -> Unit,
-    viewModel: LoginViewModel = viewModel()
 ) {
-    val email = viewModel.email.collectAsState().value
-    val senha = viewModel.senha.collectAsState().value
-    val isEnabled = viewModel.isLoginEnabled.collectAsState(initial = false).value
+    val loginViewModel : LoginViewModel = viewModel( //Precisa declarar dependecias externamente no site do android https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=pt-br#declaring_dependencies e coloca no gradle.kts()Module:app
+        factory = LoginViewModelFactory(
+            AppDatabase
+                .getDatabase(LocalContext.current)
+                .userDao()
+        )
+    )
+    val email = loginViewModel.email.collectAsState().value
+    val senha = loginViewModel.senha.collectAsState().value
+    val isEnabled = loginViewModel.isLoginEnabled.collectAsState(initial = false).value
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -50,15 +63,25 @@ fun TelaMain(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = email,
-            onValueChange = { viewModel.onEmailChange(it) },
+            onValueChange = { loginViewModel.onEmailChange(it) },
             label = { Text("Email") }
         )
         PasswordTextField(label = "Senha",
             senha = senha,
-            onSenhaChange = { viewModel.onSenhaChange(it) })
+            onSenhaChange = { loginViewModel.onSenhaChange(it) })
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Button(onClick = { onLogin(email) },
+            Button(onClick = {
+                coroutineScope.launch {
+                    val loginValido = loginViewModel.validarLogin()
+                    if (loginValido) {
+                        onLogin(email)
+                    } else {
+
+                        println("Login inválido!")
+                    }
+                }
+            },
                 enabled = isEnabled) {
                 Text(text = "Login")
             }

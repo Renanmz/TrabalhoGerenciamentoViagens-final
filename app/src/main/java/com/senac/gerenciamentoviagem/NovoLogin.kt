@@ -54,9 +54,9 @@ fun NovoLogin(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        OutlinedTextField(nome, { viewModel.onNomeChange(it) }, label = { Text("Nome") })
-        OutlinedTextField(email, { viewModel.onEmailChange(it) }, label = { Text("Email") })
-        OutlinedTextField(telefone, { viewModel.onTelefoneChange(it) }, label = { Text("Telefone") })
+        OutlinedTextField(nome, { viewModel.onNomeChange(it) }, label = { Text("Nome") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(email, { viewModel.onEmailChange(it) }, label = { Text("Email") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(telefone, { viewModel.onTelefoneChange(it) }, label = { Text("Telefone") }, modifier = Modifier.fillMaxWidth())
 
         PasswordTextField(senha, { viewModel.onSenhaChange(it) }, "Senha")
         PasswordTextField(confirmarSenha, { viewModel.onConfirmarSenhaChange(it) }, "Confirmar Senha")
