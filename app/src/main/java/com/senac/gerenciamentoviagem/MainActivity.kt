@@ -72,7 +72,10 @@ fun MyApp() {
                 }
 
                 is RoutePrincipal -> NavEntry(key) {
-                    Principal(email = key.email)
+                    Principal(email = key.email,
+                        onNavigate = {
+                        backStack.removeLastOrNull()
+                    })
                 }
 
                 is RouteNovoLogin -> NavEntry(key) {
