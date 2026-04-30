@@ -1,8 +1,9 @@
-package com.senac.gerenciamentoviagem.ViewModel
+package com.senac.gerenciamentoviagem.ViewModel.Factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.senac.gerenciamentoviagem.Bd.UserDao
+import com.senac.gerenciamentoviagem.ViewModel.NovoLoginViewModel
 
 class NovoLoginViewModelFactory(
     private val userDao: UserDao

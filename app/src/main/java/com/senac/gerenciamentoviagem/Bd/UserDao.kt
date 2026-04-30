@@ -3,6 +3,7 @@ package com.senac.gerenciamentoviagem.Bd
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.senac.gerenciamentoviagem.Model.User
 
 @Dao
 interface UserDao {

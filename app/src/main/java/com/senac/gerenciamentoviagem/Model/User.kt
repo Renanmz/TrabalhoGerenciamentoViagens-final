@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem.Bd
+package com.senac.gerenciamentoviagem.Model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

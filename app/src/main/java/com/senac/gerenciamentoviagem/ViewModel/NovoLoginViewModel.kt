@@ -2,7 +2,7 @@ package com.senac.gerenciamentoviagem.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senac.gerenciamentoviagem.Bd.User
+import com.senac.gerenciamentoviagem.Model.User
 import com.senac.gerenciamentoviagem.Bd.UserDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

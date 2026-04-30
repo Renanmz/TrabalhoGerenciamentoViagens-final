@@ -1,10 +1,7 @@
-package com.senac.gerenciamentoviagem
+package com.senac.gerenciamentoviagem.EntradaTelas
 
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,8 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.gerenciamentoviagem.Bd.AppDatabase
+import com.senac.gerenciamentoviagem.PasswordTextField
 import com.senac.gerenciamentoviagem.ViewModel.NovoLoginViewModel
-import com.senac.gerenciamentoviagem.ViewModel.NovoLoginViewModelFactory
+import com.senac.gerenciamentoviagem.ViewModel.Factory.NovoLoginViewModelFactory
 
 @Composable
 fun NovoLogin(
@@ -59,7 +57,11 @@ fun NovoLogin(
         OutlinedTextField(telefone, { viewModel.onTelefoneChange(it) }, label = { Text("Telefone") }, modifier = Modifier.fillMaxWidth())
 
         PasswordTextField(senha, { viewModel.onSenhaChange(it) }, "Senha")
-        PasswordTextField(confirmarSenha, { viewModel.onConfirmarSenhaChange(it) }, "Confirmar Senha")
+        PasswordTextField(
+            confirmarSenha,
+            { viewModel.onConfirmarSenhaChange(it) },
+            "Confirmar Senha"
+        )
 
         if (!senhaMatch) {
             Text("As senhas não coincidem", color = Color.Red)

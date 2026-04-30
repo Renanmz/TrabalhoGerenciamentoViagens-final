@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem
+package com.senac.gerenciamentoviagem.Rotas
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable

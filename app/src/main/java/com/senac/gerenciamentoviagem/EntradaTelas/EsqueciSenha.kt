@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem
+package com.senac.gerenciamentoviagem.EntradaTelas
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

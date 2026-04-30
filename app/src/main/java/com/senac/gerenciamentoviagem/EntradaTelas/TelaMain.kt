@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem
+package com.senac.gerenciamentoviagem.EntradaTelas
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,8 +23,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.gerenciamentoviagem.Bd.AppDatabase
+import com.senac.gerenciamentoviagem.PasswordTextField
+import com.senac.gerenciamentoviagem.R
 import com.senac.gerenciamentoviagem.ViewModel.LoginViewModel
-import com.senac.gerenciamentoviagem.ViewModel.LoginViewModelFactory
+import com.senac.gerenciamentoviagem.ViewModel.Factory.LoginViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
@@ -66,7 +68,8 @@ fun TelaMain(
             onValueChange = { loginViewModel.onEmailChange(it) },
             label = { Text("Email") }
         )
-        PasswordTextField(label = "Senha",
+        PasswordTextField(
+            label = "Senha",
             senha = senha,
             onSenhaChange = { loginViewModel.onSenhaChange(it) })
 
