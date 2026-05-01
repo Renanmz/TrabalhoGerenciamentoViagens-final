@@ -30,6 +30,8 @@ import com.senac.gerenciamentoviagem.EntradaTelas.TelaMain
 import com.senac.gerenciamentoviagem.MainTelas.Principal
 import com.senac.gerenciamentoviagem.Rotas.RouteEsqueciSenha
 import com.senac.gerenciamentoviagem.Rotas.RouteMain
+import com.senac.gerenciamentoviagem.Rotas.RouteMinhasViagens
+import com.senac.gerenciamentoviagem.Rotas.RouteNovaViagem
 import com.senac.gerenciamentoviagem.Rotas.RouteNovoLogin
 import com.senac.gerenciamentoviagem.Rotas.RoutePrincipal
 import com.senac.gerenciamentoviagem.ui.theme.GerenciamentoViagemTheme
@@ -75,7 +77,14 @@ fun MyApp() {
                     Principal(email = key.email,
                         onNavigate = {
                         backStack.removeLastOrNull()
-                    })
+                        },
+                        onNovaViagem = {
+                            backStack.add(RouteNovaViagem)
+                        },
+                        onMinhasViagens = {
+                            backStack.add(RouteMinhasViagens)
+                        }
+                    )
                 }
 
                 is RouteNovoLogin -> NavEntry(key) {

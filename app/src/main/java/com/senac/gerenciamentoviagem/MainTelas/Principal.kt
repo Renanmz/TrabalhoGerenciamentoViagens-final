@@ -29,7 +29,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 @Composable
-fun Principal(email: String, onNavigate: () -> Unit) {
+fun Principal(email: String,
+              onNavigate: () -> Unit,
+              onNovaViagem: () -> Unit,
+              onMinhasViagens: () -> Unit) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -42,19 +45,13 @@ fun Principal(email: String, onNavigate: () -> Unit) {
                         text = "Nova Viagem",
                         modifier = Modifier
                             .padding(8.dp)
-                            .clickable {
-                                // Ação para Nova Viagem
-                                scope.launch { drawerState.close() }
-                            }
+                            .clickable {onNovaViagem()}
                     )
                     Text(
                         text = "Minhas Viagens",
                         modifier = Modifier
                             .padding(8.dp)
-                            .clickable {
-                                // Ação para Minhas Viagens
-                                scope.launch { drawerState.close() }
-                            }
+                            .clickable {onMinhasViagens()}
                     )
                     Text(
                         text = "Sobre",

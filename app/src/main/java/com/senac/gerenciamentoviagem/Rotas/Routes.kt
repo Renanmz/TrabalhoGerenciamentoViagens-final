@@ -11,3 +11,7 @@ data object RouteNovoLogin: NavKey
 data object RouteEsqueciSenha: NavKey
 @Serializable
 data class RoutePrincipal(val email: String): NavKey
+@Serializable
+data object RouteNovaViagem: NavKey
+@Serializable
+data object RouteMinhasViagens: NavKey
