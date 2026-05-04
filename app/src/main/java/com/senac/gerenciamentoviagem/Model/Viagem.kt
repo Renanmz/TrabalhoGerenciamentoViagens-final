@@ -10,12 +10,12 @@ data class Viagem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    val Destino: String,
-    val Tipo: Tipo,
-    val DataInicio : LocalDateTime = LocalDateTime.now(),
-    val DataFinal: LocalDateTime = LocalDateTime.now(),
-    val Orcamento: Float,
-    val UserId: Int
+    val destino: String,
+    val tipo: Tipo,
+    val dataInicio : LocalDateTime = LocalDateTime.now(),
+    val dataFinal: LocalDateTime = LocalDateTime.now(),
+    val orcamento: Float,
+    val userId: Int
 )
 enum class Tipo(){
     Lazer,

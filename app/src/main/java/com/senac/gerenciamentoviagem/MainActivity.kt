@@ -27,6 +27,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.senac.gerenciamentoviagem.EntradaTelas.EsqueciSenha
 import com.senac.gerenciamentoviagem.EntradaTelas.NovoLogin
 import com.senac.gerenciamentoviagem.EntradaTelas.TelaMain
+import com.senac.gerenciamentoviagem.MainTelas.MinhasViagens
+import com.senac.gerenciamentoviagem.MainTelas.NovaViagem
 import com.senac.gerenciamentoviagem.MainTelas.Principal
 import com.senac.gerenciamentoviagem.Rotas.RouteEsqueciSenha
 import com.senac.gerenciamentoviagem.Rotas.RouteMain
@@ -61,8 +63,8 @@ fun MyApp() {
 
                 is RouteMain -> NavEntry(key) {
                     TelaMain(
-                        onLogin = {
-                            backStack.add(RoutePrincipal(it))
+                        onLogin = { userId, email ->
+                            backStack.add(RoutePrincipal(userId, email))
                         },
                         onCadastro = {
                             backStack.add(RouteNovoLogin)
@@ -79,10 +81,10 @@ fun MyApp() {
                         backStack.removeLastOrNull()
                         },
                         onNovaViagem = {
-                            backStack.add(RouteNovaViagem)
+                            backStack.add(RouteNovaViagem(key.userId))
                         },
                         onMinhasViagens = {
-                            backStack.add(RouteMinhasViagens)
+                            backStack.add(RouteMinhasViagens(key.userId))
                         }
                     )
                 }
@@ -97,6 +99,24 @@ fun MyApp() {
                     EsqueciSenha(onNavigate = {
                         backStack.removeLastOrNull()
                     })
+                }
+
+                is RouteNovaViagem -> NavEntry(key) {
+                    NovaViagem(
+                        userId = key.userId,
+                        onNavigate = {
+                            backStack.removeLastOrNull()
+                        }
+                    )
+                }
+
+                is RouteMinhasViagens -> NavEntry(key) {
+                    MinhasViagens(
+                        userId = key.userId,
+                        onNavigate = {
+                            backStack.removeLastOrNull()
+                        }
+                    )
                 }
 
                 else -> {

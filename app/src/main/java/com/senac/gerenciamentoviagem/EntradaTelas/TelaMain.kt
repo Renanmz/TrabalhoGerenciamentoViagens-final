@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TelaMain(
-    onLogin: (String) -> Unit,
+    onLogin: (Int, String) -> Unit,
     onCadastro: () -> Unit,
     onRecuperarSenha: () -> Unit,
 ) {
@@ -76,11 +76,11 @@ fun TelaMain(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Button(onClick = {
                 coroutineScope.launch {
-                    val loginValido = loginViewModel.validarLogin()
-                    if (loginValido) {
-                        onLogin(email)
-                    } else {
+                    val user = loginViewModel.validarLogin()
 
+                    if (user != null) {
+                        onLogin(user.id, user.email)
+                    } else {
                         println("Login inválido!")
                     }
                 }
