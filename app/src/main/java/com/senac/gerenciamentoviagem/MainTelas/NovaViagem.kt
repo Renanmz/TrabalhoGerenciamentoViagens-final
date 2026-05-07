@@ -13,12 +13,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.gerenciamentoviagem.Bd.AppDatabase
 import com.senac.gerenciamentoviagem.Model.Tipo
 import com.senac.gerenciamentoviagem.Model.Viagem
-import com.senac.gerenciamentoviagem.ViewModel.Factory.NovaViagemViewModelFactory
-import com.senac.gerenciamentoviagem.ViewModel.Factory.ViagemViewModelFactory
-import com.senac.gerenciamentoviagem.ViewModel.NovaViagemViewModel
-import com.senac.gerenciamentoviagem.ViewModel.ViagemViewModel
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.Factory.NovaViagemViewModelFactory
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.NovaViagemViewModel
 import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun NovaViagem(
@@ -27,6 +25,9 @@ fun NovaViagem(
     onNavigate: () -> Unit
 ) {
     val context = LocalContext.current
+
+
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     val db = remember {
         AppDatabase.getDatabase(context)
@@ -101,15 +102,15 @@ fun NovaViagem(
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = {
-            abrirDatePicker { viewModel.onDataInicioChange(it) }
+            abrirDatePicker { viewModel.onDataInicioChange(it.format(formatter).toString()) }
         }) {
-            Text("Data Início: ${dataInicio.toLocalDate()}")
+            Text("Data Início: ${dataInicio}")
         }
 
         Button(onClick = {
-            abrirDatePicker { viewModel.onDataFinalChange(it) }
+            abrirDatePicker { viewModel.onDataFinalChange(it.format(formatter).toString()) }
         }) {
-            Text("Data Final: ${dataFinal.toLocalDate()}")
+            Text("Data Final: ${dataFinal}")
         }
 
         Spacer(modifier = Modifier.height(8.dp))

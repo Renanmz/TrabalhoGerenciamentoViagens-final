@@ -25,8 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.gerenciamentoviagem.Bd.AppDatabase
 import com.senac.gerenciamentoviagem.PasswordTextField
 import com.senac.gerenciamentoviagem.R
-import com.senac.gerenciamentoviagem.ViewModel.LoginViewModel
-import com.senac.gerenciamentoviagem.ViewModel.Factory.LoginViewModelFactory
+import com.senac.gerenciamentoviagem.ViewModel.Login.LoginViewModel
+import com.senac.gerenciamentoviagem.ViewModel.Login.Factory.LoginViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable

@@ -1,9 +1,9 @@
-package com.senac.gerenciamentoviagem.ViewModel.Factory
+package com.senac.gerenciamentoviagem.ViewModel.Viagem.Factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.senac.gerenciamentoviagem.Bd.ViagemDao
-import com.senac.gerenciamentoviagem.ViewModel.ViagemViewModel
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.ViagemViewModel
 
 class ViagemViewModelFactory(
     private val viagemDao: ViagemDao

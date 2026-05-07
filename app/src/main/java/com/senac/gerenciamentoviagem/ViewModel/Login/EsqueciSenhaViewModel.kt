@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem.ViewModel
+package com.senac.gerenciamentoviagem.ViewModel.Login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

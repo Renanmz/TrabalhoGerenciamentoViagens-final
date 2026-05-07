@@ -44,9 +44,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GerenciamentoViagemTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MyApp()
-                }
             }
         }
     }
@@ -115,6 +113,9 @@ fun MyApp() {
                         userId = key.userId,
                         onNavigate = {
                             backStack.removeLastOrNull()
+                        },
+                        onEditar = {
+                            backStack.add(RouteNovaViagem(key.userId))
                         }
                     )
                 }

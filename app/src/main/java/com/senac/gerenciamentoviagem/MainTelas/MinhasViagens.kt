@@ -13,12 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,10 +35,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.gerenciamentoviagem.Bd.AppDatabase
 import com.senac.gerenciamentoviagem.Model.Viagem
 import com.senac.gerenciamentoviagem.R
-import com.senac.gerenciamentoviagem.ViewModel.Factory.MinhasViagensViewModelFactory
-import com.senac.gerenciamentoviagem.ViewModel.Factory.ViagemViewModelFactory
-import com.senac.gerenciamentoviagem.ViewModel.MinhasViagensViewModel
-import com.senac.gerenciamentoviagem.ViewModel.ViagemViewModel
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.Factory.ViagemViewModelFactory
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.ViagemViewModel
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun MinhasViagens(
@@ -59,6 +54,8 @@ fun MinhasViagens(
     val viewModel: ViagemViewModel = viewModel(
         factory = ViagemViewModelFactory(db.viagemDao())
     )
+
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     val viagens by viewModel.viagens.collectAsState()
 
@@ -124,7 +121,7 @@ fun MinhasViagens(
 
                         Column {
                             Text("Destino: ${viagem.destino}")
-                            Text("Data: ${viagem.dataInicio.toLocalDate()} - ${viagem.dataFinal.toLocalDate()}")
+                            Text("Data: ${viagem.dataInicio} - ${viagem.dataFinal}")
                             Text("Orçamento: R$ ${viagem.orcamento}")
                         }
                     }

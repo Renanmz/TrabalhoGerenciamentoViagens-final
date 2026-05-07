@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.gerenciamentoviagem.Bd.AppDatabase
 import com.senac.gerenciamentoviagem.PasswordTextField
-import com.senac.gerenciamentoviagem.ViewModel.NovoLoginViewModel
-import com.senac.gerenciamentoviagem.ViewModel.Factory.NovoLoginViewModelFactory
+import com.senac.gerenciamentoviagem.ViewModel.Login.NovoLoginViewModel
+import com.senac.gerenciamentoviagem.ViewModel.Login.Factory.NovoLoginViewModelFactory
 
 @Composable
 fun NovoLogin(
