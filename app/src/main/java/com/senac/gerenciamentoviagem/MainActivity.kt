@@ -30,6 +30,7 @@ import com.senac.gerenciamentoviagem.EntradaTelas.TelaMain
 import com.senac.gerenciamentoviagem.MainTelas.MinhasViagens
 import com.senac.gerenciamentoviagem.MainTelas.NovaViagem
 import com.senac.gerenciamentoviagem.MainTelas.Principal
+import com.senac.gerenciamentoviagem.Rotas.RouteEditarViagem
 import com.senac.gerenciamentoviagem.Rotas.RouteEsqueciSenha
 import com.senac.gerenciamentoviagem.Rotas.RouteMain
 import com.senac.gerenciamentoviagem.Rotas.RouteMinhasViagens
@@ -114,8 +115,22 @@ fun MyApp() {
                         onNavigate = {
                             backStack.removeLastOrNull()
                         },
-                        onEditar = {
-                            backStack.add(RouteNovaViagem(key.userId))
+                        onEditar = { viagem ->
+                            backStack.add(
+                                RouteEditarViagem(
+                                    key.userId,
+                                    viagem
+                                )
+                            )
+                        }
+                    )
+                }
+                is RouteEditarViagem -> NavEntry(key) {
+                    NovaViagem(
+                        userId = key.userId,
+                        viagemEditar = key.viagem,
+                        onNavigate = {
+                            backStack.removeLastOrNull()
                         }
                     )
                 }

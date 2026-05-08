@@ -61,4 +61,11 @@ class NovaViagemViewModel(
             onSuccess()
         }
     }
+    fun limparCampos() {
+        _destino.value = ""
+        _tipo.value = Tipo.Lazer
+        _dataInicio.value = data
+        _dataFinal.value = data
+        _orcamento.value = ""
+    }
 }

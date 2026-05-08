@@ -37,12 +37,20 @@ fun NovaViagem(
         factory = NovaViagemViewModelFactory(db.viagemDao())
     )
     LaunchedEffect(viagemEditar) {
-        viagemEditar?.let {
-            viewModel.onDestinoChange(it.destino)
-            viewModel.onTipoChange(it.tipo)
-            viewModel.onDataInicioChange(it.dataInicio)
-            viewModel.onDataFinalChange(it.dataFinal)
-            viewModel.onOrcamentoChange(it.orcamento.toString())
+
+        if (viagemEditar == null) {
+
+            viewModel.limparCampos()
+
+        } else {
+
+            viewModel.onDestinoChange(viagemEditar.destino)
+            viewModel.onTipoChange(viagemEditar.tipo)
+            viewModel.onDataInicioChange(viagemEditar.dataInicio)
+            viewModel.onDataFinalChange(viagemEditar.dataFinal)
+            viewModel.onOrcamentoChange(
+                viagemEditar.orcamento.toString()
+            )
         }
     }
 
