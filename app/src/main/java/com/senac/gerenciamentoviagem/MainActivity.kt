@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -12,24 +11,29 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.senac.gerenciamentoviagem.Bd.AppDatabase
 import com.senac.gerenciamentoviagem.EntradaTelas.EsqueciSenha
 import com.senac.gerenciamentoviagem.EntradaTelas.NovoLogin
 import com.senac.gerenciamentoviagem.EntradaTelas.TelaMain
+import com.senac.gerenciamentoviagem.Localizacao.LocationRepository
+import com.senac.gerenciamentoviagem.Localizacao.ViagemRepository
 import com.senac.gerenciamentoviagem.MainTelas.MinhasViagens
 import com.senac.gerenciamentoviagem.MainTelas.NovaViagem
-import com.senac.gerenciamentoviagem.MainTelas.Principal
+import com.senac.gerenciamentoviagem.MainTelas.Principal.Principal
+import com.senac.gerenciamentoviagem.MainTelas.Principal.PrincipalViewModelFactory
 import com.senac.gerenciamentoviagem.Rotas.RouteEditarViagem
 import com.senac.gerenciamentoviagem.Rotas.RouteEsqueciSenha
 import com.senac.gerenciamentoviagem.Rotas.RouteMain
@@ -37,6 +41,7 @@ import com.senac.gerenciamentoviagem.Rotas.RouteMinhasViagens
 import com.senac.gerenciamentoviagem.Rotas.RouteNovaViagem
 import com.senac.gerenciamentoviagem.Rotas.RouteNovoLogin
 import com.senac.gerenciamentoviagem.Rotas.RoutePrincipal
+import com.senac.gerenciamentoviagem.ViewModel.PrincipalViewModel
 import com.senac.gerenciamentoviagem.ui.theme.GerenciamentoViagemTheme
 
 class MainActivity : ComponentActivity() {
@@ -75,16 +80,36 @@ fun MyApp() {
                 }
 
                 is RoutePrincipal -> NavEntry(key) {
-                    Principal(email = key.email,
+
+                    val context = LocalContext.current
+
+                    val db = AppDatabase.getDatabase(context)
+
+                    val principalViewModel: PrincipalViewModel = viewModel(
+                        factory = PrincipalViewModelFactory(
+                            locationRepository = LocationRepository(context),
+
+                            viagemRepository = ViagemRepository(
+                                db.viagemDao()
+                            )
+                        )
+                    )
+                    Principal(
+                        email = key.email,
+
                         onNavigate = {
-                        backStack.removeLastOrNull()
+                            backStack.removeLastOrNull()
                         },
+
                         onNovaViagem = {
                             backStack.add(RouteNovaViagem(key.userId))
                         },
+
                         onMinhasViagens = {
                             backStack.add(RouteMinhasViagens(key.userId))
-                        }
+                        },
+
+                        viewModel = principalViewModel
                     )
                 }
 

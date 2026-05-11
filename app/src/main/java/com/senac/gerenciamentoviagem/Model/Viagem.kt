@@ -17,6 +17,7 @@ data class Viagem(
     val dataInicio : String,
     val dataFinal: String,
     val orcamento: Float,
+    val totalGastos: Float = 0f,
     val userId: Int
 )
 @Serializable

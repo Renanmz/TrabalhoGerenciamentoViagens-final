@@ -27,7 +27,9 @@ fun NovaViagem(
     val context = LocalContext.current
 
 
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val formatterTela = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+    val formatterBanco = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     val db = remember {
         AppDatabase.getDatabase(context)
@@ -110,15 +112,45 @@ fun NovaViagem(
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = {
-            abrirDatePicker { viewModel.onDataInicioChange(it.format(formatter).toString()) }
+            abrirDatePicker {
+
+                val dataBanco = it.format(formatterBanco)
+
+                viewModel.onDataInicioChange(dataBanco)
+            }
         }) {
-            Text("Data Início: ${dataInicio}")
+            Text(
+                "Data Início: ${
+                    try {
+                        java.time.LocalDate
+                            .parse(dataInicio, formatterBanco)
+                            .format(formatterTela)
+                    } catch (e: Exception) {
+                        dataInicio
+                    }
+                }"
+            )
         }
 
         Button(onClick = {
-            abrirDatePicker { viewModel.onDataFinalChange(it.format(formatter).toString()) }
+            abrirDatePicker {
+
+                val dataBanco = it.format(formatterBanco)
+
+                viewModel.onDataFinalChange(dataBanco)
+            }
         }) {
-            Text("Data Final: ${dataFinal}")
+            Text(
+                "Data Final: ${
+                    try {
+                        java.time.LocalDate
+                            .parse(dataFinal, formatterBanco)
+                            .format(formatterTela)
+                    } catch (e: Exception) {
+                        dataFinal
+                    }
+                }"
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))

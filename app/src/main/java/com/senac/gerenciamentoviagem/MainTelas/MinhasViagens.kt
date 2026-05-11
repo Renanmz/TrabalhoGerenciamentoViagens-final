@@ -55,7 +55,6 @@ fun MinhasViagens(
         factory = ViagemViewModelFactory(db.viagemDao())
     )
 
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     val viagens by viewModel.viagens.collectAsState()
 
@@ -121,7 +120,13 @@ fun MinhasViagens(
 
                         Column {
                             Text("Destino: ${viagem.destino}")
-                            Text("Data: ${viagem.dataInicio} - ${viagem.dataFinal}")
+                            Text(
+                                "Data: ${
+                                    formatarData(viagem.dataInicio)
+                                } - ${
+                                    formatarData(viagem.dataFinal)
+                                }"
+                            )
                             Text("Orçamento: R$ ${viagem.orcamento}")
                         }
                     }
@@ -151,5 +156,22 @@ fun MinhasViagens(
                 }
             }
         }
+    }
+}
+fun formatarData(data: String): String {
+
+    return try {
+
+        val formatterBanco = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        val formatterTela = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+        java.time.LocalDate
+            .parse(data, formatterBanco)
+            .format(formatterTela)
+
+    } catch (e: Exception) {
+
+        data
     }
 }

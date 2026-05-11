@@ -60,6 +60,10 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     //Banco
 
+    //Localização
+    implementation(libs.play.services.location)
+    implementation(libs.accompanist.permissions)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
