@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.senac.gerenciamentoviagem.ViewModel.PrincipalViewModel
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
@@ -128,12 +129,6 @@ fun Principal(
         }
     ) {
 
-        /*
-        =========================
-        SCAFFOLD
-        =========================
-         */
-
         Scaffold(
             topBar = {
                 UILabTopBar(
@@ -155,11 +150,7 @@ fun Principal(
                     .fillMaxSize()
             ) {
 
-                /*
-                =========================
-                LOCALIZAÇÃO
-                =========================
-                 */
+
 
                 Text(
                     text = "Cidade atual: ${uiState.cidadeAtual ?: "Localizando..."}",
@@ -172,11 +163,7 @@ fun Principal(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                /*
-                =========================
-                VIAGEM ATUAL
-                =========================
-                 */
+
 
                 uiState.viagemAtual?.let { viagem ->
 
@@ -202,11 +189,11 @@ fun Principal(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text("Data início: ${viagem.dataInicio}")
+                            Text("Data início: ${formatarData(viagem.dataInicio)}")
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text("Data final: ${viagem.dataFinal}")
+                            Text("Data final: ${formatarData(viagem.dataFinal)}")
 
                             Spacer(modifier = Modifier.height(8.dp))
 
@@ -232,11 +219,6 @@ fun Principal(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                /*
-                =========================
-                BOTÃO CANCELAR
-                =========================
-                 */
 
                 Button(
                     onClick = {
@@ -281,4 +263,21 @@ private fun UILabTopBar(
             titleContentColor = MaterialTheme.colorScheme.primary
         )
     )
+}
+fun formatarData(data: String): String {
+
+    return try {
+
+        val formatterBanco = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        val formatterTela = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+        java.time.LocalDate
+            .parse(data, formatterBanco)
+            .format(formatterTela)
+
+    } catch (e: Exception) {
+
+        data
+    }
 }
