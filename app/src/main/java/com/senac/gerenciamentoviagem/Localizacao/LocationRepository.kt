@@ -108,4 +108,31 @@ class LocationRepository(private val context: Context) {
             fusedClient.removeLocationUpdates(callback)
         }
     }.flowOn(Dispatchers.IO)
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    suspend fun obterCoordenadasCidade(
+        cidade: String
+    ): Pair<Double, Double>? = withContext(Dispatchers.IO) {
+
+        val geocoder = Geocoder(context, Locale.getDefault())
+
+        var resultado: Pair<Double, Double>? = null
+
+        val latch = java.util.concurrent.CountDownLatch(1)
+
+        geocoder.getFromLocationName(cidade, 1) { addresses ->
+
+            val endereco = addresses.firstOrNull()
+
+            resultado = endereco?.let {
+                Pair(it.latitude, it.longitude)
+            }
+
+            latch.countDown()
+        }
+
+        latch.await(5, java.util.concurrent.TimeUnit.SECONDS)
+
+        resultado
+    }
 }

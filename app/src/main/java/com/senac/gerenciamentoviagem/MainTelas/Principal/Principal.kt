@@ -37,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.senac.gerenciamentoviagem.Localizacao.MapaDestino
 import com.senac.gerenciamentoviagem.ViewModel.PrincipalViewModel
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
@@ -206,6 +207,20 @@ fun Principal(
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Text("Total de gastos: R$ ${viagem.totalGastos}")
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // MAPA
+                            uiState.latitudeDestino?.let { lat ->
+
+                                uiState.longitudeDestino?.let { lng ->
+
+                                    MapaDestino(
+                                        latitude = lat,
+                                        longitude = lng
+                                    )
+                                }
+                            }
                         }
                     }
 

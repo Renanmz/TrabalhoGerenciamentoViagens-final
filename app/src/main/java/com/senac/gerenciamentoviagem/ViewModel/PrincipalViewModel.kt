@@ -45,10 +45,42 @@ class PrincipalViewModel(
                         dataAtual
                     )
 
+                    var latitudeDestino: Double? = null
+                    var longitudeDestino: Double? = null
+
+                    if (viagem != null) {
+
+                        val destinoAnterior =
+                            _uiState.value.viagemAtual?.destino
+
+                        if (destinoAnterior != viagem.destino) {
+
+                            val coordenadas =
+                                locationRepository.obterCoordenadasCidade(
+                                    viagem.destino
+                                )
+
+                            latitudeDestino = coordenadas?.first
+                            longitudeDestino = coordenadas?.second
+
+                        } else {
+
+                            latitudeDestino =
+                                _uiState.value.latitudeDestino
+
+                            longitudeDestino =
+                                _uiState.value.longitudeDestino
+                        }
+                    }
+
                     _uiState.update {
                         it.copy(
                             cidadeAtual = cidade,
                             viagemAtual = viagem,
+
+                            latitudeDestino = latitudeDestino,
+                            longitudeDestino = longitudeDestino,
+
                             loading = false
                         )
                     }
