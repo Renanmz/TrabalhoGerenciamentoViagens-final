@@ -30,12 +30,14 @@ import com.senac.gerenciamentoviagem.EntradaTelas.NovoLogin
 import com.senac.gerenciamentoviagem.EntradaTelas.TelaMain
 import com.senac.gerenciamentoviagem.Localizacao.LocationRepository
 import com.senac.gerenciamentoviagem.Localizacao.ViagemRepository
+import com.senac.gerenciamentoviagem.MainTelas.Fotos.FotosTela
 import com.senac.gerenciamentoviagem.MainTelas.MinhasViagens
 import com.senac.gerenciamentoviagem.MainTelas.NovaViagem
 import com.senac.gerenciamentoviagem.MainTelas.Principal.Principal
 import com.senac.gerenciamentoviagem.MainTelas.Principal.PrincipalViewModelFactory
 import com.senac.gerenciamentoviagem.Rotas.RouteEditarViagem
 import com.senac.gerenciamentoviagem.Rotas.RouteEsqueciSenha
+import com.senac.gerenciamentoviagem.Rotas.RouteFotos
 import com.senac.gerenciamentoviagem.Rotas.RouteMain
 import com.senac.gerenciamentoviagem.Rotas.RouteMinhasViagens
 import com.senac.gerenciamentoviagem.Rotas.RouteNovaViagem
@@ -106,18 +108,15 @@ fun MyApp() {
                     Principal(
                         email = key.email,
 
-                        onNavigate = {
-                            backStack.removeLastOrNull()
-                        },
-
-                        onNovaViagem = {
-                            backStack.add(RouteNovaViagem(key.userId))
-                        },
-
-                        onMinhasViagens = {
-                            backStack.add(RouteMinhasViagens(key.userId))
-                        },
-
+                        onNavigate = {backStack.removeLastOrNull()},
+                        onNovaViagem = { backStack.add(RouteNovaViagem(key.userId))},
+                        onMinhasViagens = {backStack.add(RouteMinhasViagens(key.userId))},
+                        onFotosClick = { viagemId ->backStack.add(
+                            RouteFotos(
+                                userId = key.userId,
+                                viagemId = viagemId
+                            )
+                        )},
                         viewModel = principalViewModel
                     )
                 }
@@ -164,6 +163,16 @@ fun MyApp() {
                         userId = key.userId,
                         viagemEditar = key.viagem,
                         onNavigate = {
+                            backStack.removeLastOrNull()
+                        }
+                    )
+                }
+
+                is RouteFotos -> NavEntry(key) {
+                    FotosTela(
+                        viagemId = key.viagemId,
+                        userId = key.userId,
+                        onBack = {
                             backStack.removeLastOrNull()
                         }
                     )

@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,6 +30,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -55,6 +59,7 @@ fun Principal(
     onNavigate: () -> Unit,
     onNovaViagem: () -> Unit,
     onMinhasViagens: () -> Unit,
+    onFotosClick: (viagemId: Int) -> Unit,
     viewModel: PrincipalViewModel
 ) {
 
@@ -145,6 +150,24 @@ fun Principal(
                         }
                     }
                 )
+            },
+            bottomBar = {
+                NavigationBar {
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.LocationOn, contentDescription = "Roteiro") },
+                        label = { Text("Roteiro") },
+                        selected = false,
+                        onClick = {  }
+                    )
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.Star, contentDescription = "Fotos") },
+                        label = { Text("Fotos") },
+                        selected = false,
+                        onClick = { uiState.viagemAtual?.id?.let { id ->
+                                        onFotosClick(id) }
+                        }
+                    )
+                }
             },
             modifier = Modifier.fillMaxSize()
 
