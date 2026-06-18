@@ -6,11 +6,15 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
@@ -35,6 +39,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.senac.gerenciamentoviagem.Localizacao.MapaDestino
@@ -143,12 +149,14 @@ fun Principal(
             modifier = Modifier.fillMaxSize()
 
         ) { innerPadding ->
+            val scrollState = rememberScrollState()
 
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(16.dp)
                     .fillMaxSize()
+                    .verticalScroll(scrollState)
             ) {
 
 
@@ -159,66 +167,64 @@ fun Principal(
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-
                 HorizontalDivider()
-
                 Spacer(modifier = Modifier.height(16.dp))
-
-
 
                 uiState.viagemAtual?.let { viagem ->
 
                     Card(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxWidth(),
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 4.dp
                         )
                     ) {
-
                         Column(
                             modifier = Modifier.padding(16.dp)
                         ) {
-
                             Text(
                                 text = "Viagem Atual",
                                 style = MaterialTheme.typography.titleLarge
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
-
                             Text("Destino: ${viagem.destino}")
-
                             Spacer(modifier = Modifier.height(8.dp))
-
                             Text("Data início: ${formatarData(viagem.dataInicio)}")
-
                             Spacer(modifier = Modifier.height(8.dp))
-
                             Text("Data final: ${formatarData(viagem.dataFinal)}")
-
                             Spacer(modifier = Modifier.height(8.dp))
-
                             Text("Tipo: ${viagem.tipo}")
-
                             Spacer(modifier = Modifier.height(8.dp))
-
                             Text("Orçamento: R$ ${viagem.orcamento}")
-
                             Spacer(modifier = Modifier.height(8.dp))
-
                             Text("Total de gastos: R$ ${viagem.totalGastos}")
+                            Spacer(modifier = Modifier.height(36.dp))
 
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // MAPA
+                            // Mapa
                             uiState.latitudeDestino?.let { lat ->
-
                                 uiState.longitudeDestino?.let { lng ->
+                                    Spacer(modifier = Modifier.height(16.dp))
 
-                                    MapaDestino(
-                                        latitude = lat,
-                                        longitude = lng
-                                    )
+
+                                    androidx.compose.foundation.layout.Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(300.dp)
+                                            .clipToBounds()
+                                            .pointerInput(Unit) {
+                                                detectTapGestures(
+                                                    onPress = {
+
+                                                    }
+                                                )
+                                            }
+                                    ) {
+                                        MapaDestino(
+                                            latitude = lat,
+                                            longitude = lng,
+                                            modifier = Modifier.fillMaxSize()
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -231,10 +237,7 @@ fun Principal(
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
-
                 Spacer(modifier = Modifier.height(24.dp))
-
-
                 Button(
                     onClick = {
                         onNavigate()

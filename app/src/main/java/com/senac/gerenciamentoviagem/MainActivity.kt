@@ -43,10 +43,19 @@ import com.senac.gerenciamentoviagem.Rotas.RouteNovoLogin
 import com.senac.gerenciamentoviagem.Rotas.RoutePrincipal
 import com.senac.gerenciamentoviagem.ViewModel.PrincipalViewModel
 import com.senac.gerenciamentoviagem.ui.theme.GerenciamentoViagemTheme
+import org.osmdroid.config.Configuration
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Configuration.getInstance().userAgentValue = packageName
+        Configuration.getInstance().load(
+            applicationContext,
+            getSharedPreferences(
+                "osmdroid",
+                MODE_PRIVATE
+            )
+        )
         enableEdgeToEdge()
         setContent {
             GerenciamentoViagemTheme {
