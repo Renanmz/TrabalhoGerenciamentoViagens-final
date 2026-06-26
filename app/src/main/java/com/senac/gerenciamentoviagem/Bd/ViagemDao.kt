@@ -19,6 +19,9 @@ interface ViagemDao {
     @Delete
     suspend fun delete(viagem: Viagem)
 
+    @Query("SELECT * FROM viagem WHERE id = :id")
+    suspend fun getById(id: Int): Viagem?
+
     @Query("SELECT * FROM viagem WHERE userId = :userId")
     suspend fun findByUser(userId: Int): List<Viagem>
 

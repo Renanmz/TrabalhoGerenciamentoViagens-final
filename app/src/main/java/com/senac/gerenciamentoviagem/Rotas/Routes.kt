@@ -20,3 +20,5 @@ data class RouteMinhasViagens(val userId: Int) : NavKey
 data class RouteEditarViagem(val userId: Int, val viagem: Viagem) : NavKey
 @Serializable
 data class RouteFotos(val userId: Int, val viagemId: Int) : NavKey
+@Serializable
+data class RouteRoteiro(val userId: Int, val viagemId: Int) : NavKey

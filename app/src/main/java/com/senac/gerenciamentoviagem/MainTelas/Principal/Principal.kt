@@ -60,6 +60,7 @@ fun Principal(
     onNovaViagem: () -> Unit,
     onMinhasViagens: () -> Unit,
     onFotosClick: (viagemId: Int) -> Unit,
+    onRoteiroClick: (viagemId: Int) -> Unit,
     viewModel: PrincipalViewModel
 ) {
 
@@ -157,7 +158,11 @@ fun Principal(
                         icon = { Icon(Icons.Default.LocationOn, contentDescription = "Roteiro") },
                         label = { Text("Roteiro") },
                         selected = false,
-                        onClick = {  }
+                        onClick = {
+                            uiState.viagemAtual?.let { viagem ->
+                                onRoteiroClick(viagem.id)
+                            }
+                        }
                     )
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.Star, contentDescription = "Fotos") },
@@ -221,7 +226,7 @@ fun Principal(
                             Text("Orçamento: R$ ${viagem.orcamento}")
                             Spacer(modifier = Modifier.height(8.dp))
                             Text("Total de gastos: R$ ${viagem.totalGastos}")
-                            Spacer(modifier = Modifier.height(36.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
 
                             // Mapa
                             uiState.latitudeDestino?.let { lat ->
