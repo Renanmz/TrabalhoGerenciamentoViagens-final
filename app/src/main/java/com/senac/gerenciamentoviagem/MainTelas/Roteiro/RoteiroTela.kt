@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro
+package com.senac.gerenciamentoviagem.MainTelas.Roteiro
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

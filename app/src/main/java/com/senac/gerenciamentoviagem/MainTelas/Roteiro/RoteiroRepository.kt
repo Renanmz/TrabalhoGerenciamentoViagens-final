@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro
+package com.senac.gerenciamentoviagem.MainTelas.Roteiro
 
 import com.senac.gerenciamentoviagem.BuildConfig
 
@@ -15,7 +15,17 @@ class RoteiroRepository(private val service: GeminiService) {
         val prompt = """
             Crie um roteiro de viagem de $tipoViagem para $cidade de $dias dias com foco em $interesses. 
             O orçamento total disponível é de R$ $orcamento. 
-            Responda em Português, não responda diretamenta a esse prompt, use tópicos e sugira atividades que caibam no orçamento informado e sejam adequadas para uma viagem de $tipoViagem.
+            Responda em Português, não responda diretamenta a esse prompt, use tópicos e sugira atividades que caibam no orçamento informado e sejam adequadas para uma viagem de $tipoViagem. 
+            Formate o roteiro como esse exemplo:
+            Dia 1 : [Descrição geral]
+             - Detalhes da atividade 1
+             - Detalhes da atividade 2
+             - Detalhes da atividade 3
+            Dia 2 : [Descrição geral]
+             - Detalhes da atividade 1
+             - Detalhes da atividade 2
+             - Detalhes da atividade 3
+            ...
         """.trimIndent()
 
         val request = GeminiRequest(listOf(Content(listOf(Part(prompt)))))

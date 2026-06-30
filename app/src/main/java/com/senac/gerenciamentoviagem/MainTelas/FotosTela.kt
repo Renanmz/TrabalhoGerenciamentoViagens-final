@@ -1,6 +1,5 @@
-package com.senac.gerenciamentoviagem.MainTelas.Fotos
+package com.senac.gerenciamentoviagem.MainTelas
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
@@ -14,32 +13,32 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.FotoViewModel
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FotosTela(
     viagemId: Int,
-    userId: Int, // Adicionado para manter o padrão das suas rotas
+    userId: Int,
+    viewModel: FotoViewModel, // Injetando o ViewModel para persistência
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-
-    // Estado para armazenar a lista de URIs das fotos
-    // Em um projeto real, isso deveria vir do Banco de Dados (Room)
-    var fotosPorViagem by remember { mutableStateOf(listOf<Uri>()) }
+    
+    // Observa a lista de fotos do banco de dados em tempo real
+    val fotos by viewModel.fotos.collectAsState()
 
     var showSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
@@ -49,7 +48,8 @@ fun FotosTela(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            fotosPorViagem = fotosPorViagem + it
+            // Salva permanentemente no Banco de Dados
+            viewModel.adicionarFoto(viagemId, it.toString())
         }
         showSheet = false
     }
@@ -59,7 +59,6 @@ fun FotosTela(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap: Bitmap? ->
         bitmap?.let {
-            // Salva o bitmap no armazenamento e retorna a String do caminho
             val path = MediaStore.Images.Media.insertImage(
                 context.contentResolver,
                 it,
@@ -67,8 +66,8 @@ fun FotosTela(
                 null
             )
             if (path != null) {
-                val uri = Uri.parse(path)
-                fotosPorViagem = fotosPorViagem + uri
+                // Salva o caminho da foto no Banco de Dados
+                viewModel.adicionarFoto(viagemId, path)
             }
         }
         showSheet = false
@@ -96,7 +95,6 @@ fun FotosTela(
         }
     ) { padding ->
 
-        // Menu de Opções (Câmera ou Galeria)
         if (showSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showSheet = false },
@@ -115,14 +113,12 @@ fun FotosTela(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        // Botão Câmera
                         ButtonOption(
                             icon = Icons.Default.PhotoCamera,
                             label = "Câmera",
                             onClick = { cameraLauncher.launch() }
                         )
 
-                        // Botão Galeria
                         ButtonOption(
                             icon = Icons.Default.Image,
                             label = "Galeria",
@@ -133,8 +129,7 @@ fun FotosTela(
             }
         }
 
-        // Listagem de Fotos
-        if (fotosPorViagem.isEmpty()) {
+        if (fotos.isEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -151,19 +146,30 @@ fun FotosTela(
                     .padding(padding),
                 contentPadding = PaddingValues(4.dp)
             ) {
-                items(fotosPorViagem) { uri ->
-                    Card(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .aspectRatio(1f), // Quadrado perfeito
-                        elevation = CardDefaults.cardElevation(2.dp)
-                    ) {
-                        AsyncImage(
-                            model = uri,
-                            contentDescription = "Foto da viagem",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
+                items(fotos) { foto ->
+                    Box(modifier = Modifier.padding(4.dp)) {
+                        Card(
+                            modifier = Modifier.aspectRatio(1f),
+                            elevation = CardDefaults.cardElevation(2.dp)
+                        ) {
+                            AsyncImage(
+                                model = foto.uri,
+                                contentDescription = "Foto da viagem",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        // Botão para excluir a foto do banco de dados
+                        IconButton(
+                            onClick = { viewModel.deletarFoto(foto) },
+                            modifier = Modifier.align(Alignment.TopEnd)
+                        ) {
+                            Icon(
+                                Icons.Default.Delete,
+                                contentDescription = "Excluir",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
                     }
                 }
             }

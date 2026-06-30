@@ -16,10 +16,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -37,15 +35,15 @@ import com.senac.gerenciamentoviagem.EntradaTelas.NovoLogin
 import com.senac.gerenciamentoviagem.EntradaTelas.TelaMain
 import com.senac.gerenciamentoviagem.Localizacao.LocationRepository
 import com.senac.gerenciamentoviagem.Localizacao.ViagemRepository
-import com.senac.gerenciamentoviagem.MainTelas.Fotos.FotosTela
+import com.senac.gerenciamentoviagem.MainTelas.FotosTela
 import com.senac.gerenciamentoviagem.MainTelas.MinhasViagens
 import com.senac.gerenciamentoviagem.MainTelas.NovaViagem
 import com.senac.gerenciamentoviagem.MainTelas.Principal.Principal
 import com.senac.gerenciamentoviagem.MainTelas.Principal.PrincipalViewModelFactory
-import com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro.GeminiService
-import com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro.RoteiroRepository
-import com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro.RoteiroTela
-import com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro.RoteiroViewModel
+import com.senac.gerenciamentoviagem.MainTelas.Roteiro.GeminiService
+import com.senac.gerenciamentoviagem.MainTelas.Roteiro.RoteiroRepository
+import com.senac.gerenciamentoviagem.MainTelas.Roteiro.RoteiroTela
+import com.senac.gerenciamentoviagem.MainTelas.Roteiro.RoteiroViewModel
 import com.senac.gerenciamentoviagem.Rotas.RouteEditarViagem
 import com.senac.gerenciamentoviagem.Rotas.RouteEsqueciSenha
 import com.senac.gerenciamentoviagem.Rotas.RouteFotos
@@ -56,6 +54,7 @@ import com.senac.gerenciamentoviagem.Rotas.RouteNovoLogin
 import com.senac.gerenciamentoviagem.Rotas.RoutePrincipal
 import com.senac.gerenciamentoviagem.Rotas.RouteRoteiro
 import com.senac.gerenciamentoviagem.ViewModel.PrincipalViewModel
+import com.senac.gerenciamentoviagem.ViewModel.Viagem.FotoViewModel
 import com.senac.gerenciamentoviagem.ui.theme.GerenciamentoViagemTheme
 import okhttp3.OkHttpClient
 import org.osmdroid.config.Configuration
@@ -233,9 +232,24 @@ fun MyApp() {
                 }
 
                 is RouteFotos -> NavEntry(key) {
+                    val context = LocalContext.current
+                    val db = AppDatabase.getDatabase(context)
+                    val fotoViewModel: FotoViewModel = viewModel(factory = object :
+                        ViewModelProvider.Factory {
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return FotoViewModel(db.fotoDao()) as T
+                        }
+                    })
+
+                    // Carregar fotos automaticamente
+                    LaunchedEffect(key.viagemId) {
+                        fotoViewModel.carregarFotos(key.viagemId)
+                    }
+
                     FotosTela(
                         viagemId = key.viagemId,
                         userId = key.userId,
+                        viewModel = fotoViewModel,
                         onBack = {
                             backStack.removeLastOrNull()
                         }

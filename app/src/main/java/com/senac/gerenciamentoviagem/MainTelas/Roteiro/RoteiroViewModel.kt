@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro
+package com.senac.gerenciamentoviagem.MainTelas.Roteiro
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

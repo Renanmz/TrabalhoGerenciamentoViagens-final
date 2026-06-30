@@ -1,4 +1,4 @@
-package com.senac.gerenciamentoviagem.MainTelas.Principal.Roteiro
+package com.senac.gerenciamentoviagem.MainTelas.Roteiro
 
 import retrofit2.http.Body
 import retrofit2.http.Header
